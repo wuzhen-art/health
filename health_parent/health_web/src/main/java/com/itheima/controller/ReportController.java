@@ -28,12 +28,12 @@ public class ReportController {
     @Reference
     private SetMealService setMealService;
 
-    /**
+  /*  *//**
      * @ LYK
      * @ 会员统计
      * @ param
      * @ return result
-     */
+     *//*
     @RequestMapping("/getMemberReport")
     public Result getMemberReport() throws Exception {
 
@@ -63,7 +63,7 @@ public class ReportController {
             e.printStackTrace();
             return new Result(false, MessageConstant.GET_MEMBER_NUMBER_REPORT_FAIL);
         }
-    }
+    }*/
 
     /**
      * @ LYK
@@ -83,6 +83,42 @@ public class ReportController {
         }
     }
 
-
+    /**
+     * 会员增长报表以及根据时间段显示
+     * @param begin
+     * @param end
+     * @return
+     */
+    @RequestMapping("/getMemberDate")
+    public Result getMemberDate(String begin,String end){
+        try {
+            //封装月份monthList
+            ArrayList<String> monthList = new ArrayList<>();
+            if (begin.length()>0 && end.length()>0) {
+                //获取区间月份
+                monthList = (ArrayList<String>) DateUtils.getMonthBetween(begin, end, "yyyy-MM");
+            } else {
+                //当前日期
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.MONTH, -12);
+                for (int i = 0; i < 12; i++) {
+                    calendar.add(Calendar.MONTH, 1);
+                    String month = DateUtils.parseDate2String(calendar.getTime(), "yyyy-MM");
+                    monthList.add(month);
+                }
+            }
+            //创建resultMap
+            Map resultMap = new HashMap();
+            //设置月份
+            resultMap.put("months",monthList);
+            //查询会员数量并设置
+            List<Integer> memberCountList = memberService.findMemberCounts(monthList);
+            resultMap.put("memberCount", memberCountList);
+            return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS, resultMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.GET_MEMBER_NUMBER_REPORT_FAIL);
+        }
+    }
 
 }
