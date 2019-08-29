@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.SetMealDao">
+    <insert id="addMeal" parameterType="Setmeal" keyProperty="id" useGeneratedKeys="true">
+        insert into t_setmeal (code,name,sex,age,helpCode,price,remark,attention,img)
+        		values
+      		(#{code},#{name},#{sex},#{age},#{helpCode},#{price},#{remark},#{attention},#{img})
+    </insert>
+
+    <resultMap id="findByIdMap" type="Setmeal">
+        <!--
+        Integer id;
+        String name;
+        String code;
+        String helpCode;
+        String sex;//套餐适用性别：0不限 1男 2女
+        String age;//套餐适用年龄
+        Float price;//套餐价格
+        String remark;
+        String attention;
+        String img;//套餐对应图片存储路径
+        List<CheckGroup> checkGroups;
+        -->
+        <id column="id" property="id" />
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="helpCode" property="helpCode"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="price" property="price"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+        <result column="img" property="img"/>
+        <collection property="checkGroups" ofType="CheckGroup" column="id" select="com.itheima.dao.CheckGroupDao.findCheckGroupById" fetchType="lazy"/>
+    </resultMap>
+    <select id="findById" parameterType="Integer" resultMap="findByIdMap">
+        select * from t_setmeal where id = #{id}
+    </select>
+    <!--<resultMap id="findBYIDMAP" type="Setmeal">
+        <id column="id" property="id" />
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="helpCode" property="helpCode"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="price" property="price"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+        <result column="img" property="img"/>
+        <collection property="checkGroups" ofType="CheckGroup">
+            <id column="id" property="id"/>
+            <result column="code" property="code"/>
+            <result column="name" property="name"/>
+            <result column="helpCode" property="helpCode"/>
+            <result column="sex" property="sex"/>
+            <result column="remark" property="remark"/>
+            <result column="attention" property="attention"/>
+            <collection property="checkItems" ofType="CheckItem">
+                <id column="id" property="id"/>
+                <result column="code" property="code"/>
+                <result column="name" property="name"/>
+                <result column="sex" property="sex"/>
+                <result column="age" property="age"/>
+                <result column="price" property="price"/>
+                <result column="type" property="type"/>
+                <result column="attention" property="attention"/>
+                <result column="remark" property="remark"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="findBYID" parameterType="Integer" resultMap="findBYIDMAP">
+        SELECT * FROM t_setmeal s,t_setmeal_checkgroup sc,t_checkgroup c,t_checkgroup_checkitem ci,t_checkitem i WHERE s.`id`=sc.`setmeal_id` AND sc.`checkgroup_id`= c.`id`
+        AND c.`id`=ci.`checkgroup_id` AND ci.`checkitem_id`=i.`id` AND s.`id`=#{id}
+    </select>-->
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
