@@ -1,13 +1,15 @@
 package com.itheima.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
-//import com.itheima.constant.RedisConstant;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itheima.dao.SetMealDao;
-import com.itheima.pojo.CheckGroup;
 import com.itheima.pojo.Setmeal;
 import org.springframework.beans.factory.annotation.Autowired;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +45,7 @@ public class SetMealServiceImpl implements SetMealService {
     }
 
     @Override
-    public List<Setmeal> getSetmealList() {
+    public List<Setmeal> getSetmealList() throws IOException {
         
 		//LiHaiWen  在Redis中获得所有套餐信息json字符串   2019-08-28
         Jedis jedis = jedisPool.getResource();
@@ -66,7 +68,7 @@ public class SetMealServiceImpl implements SetMealService {
     }
 
     @Override
-    public Setmeal findById(Integer id, Integer type) {
+    public Setmeal findById(Integer id, Integer type) throws IOException {
         
 		//LiHaiWen  在Redis中获得当前id套餐信息json字符串   2019-08-28
         Jedis jedis = jedisPool.getResource();
