@@ -8,10 +8,10 @@ import java.util.Map;
 public interface SetMealService {
     void addMeal(Setmeal setmeal, Integer[] checkgroupIds);
 
-    List<Setmeal> getSetmealList();
+    List<Setmeal> getSetmealList() throws IOException;
 
 
-    Setmeal findById(Integer id, Integer type);
+    Setmeal findById(Integer id, Integer type) throws IOException;
 
 
     Map<String, List> getSetmealReport();
