@@ -1,0 +1,54 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--<context:component-scan base-package="com.itheima.jobs"/>-->
+    <!--注册自定义job-->
+    <bean id="orderJob" class="com.itheima.jobs.ClearOrderJob"></bean>
+
+    <!-- 注册JobDetail,作用是负责通过反射调用指定的Job -->
+
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="orderJob"/>
+        <property name="targetMethod" value="clearOrder"/>
+    </bean>
+
+    <!--注册一个触发器,指定任务触发时间-->
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!--注入注册JobDetail-->
+        <property name="jobDetail" ref="jobDetail"/>
+        <!--触发时间基于cron表达式-->
+        <property name="cronExpression">
+            <value>0/10 * * * * ? *</value>
+        </property>
+        <!--上面是演示时间,下面注释为需求触发时间-->
+        <!--<property name="cronExpression">
+            <value>0 0 2 L * ? *</value>
+        </property>-->
+    </bean>
+
+    <!--注册一个统一的工厂,通过这个调度工厂调度任务-->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger"></ref>
+            </list>
+        </property>
+    </bean>
+
+
+    <dubbo:application name="health_hotSite_jobs"/>
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <dubbo:annotation package="com.itheima.jobs"/>
+    <!--
+       超时全局设置 10分钟
+       check=false 不检查服务提供方，开发阶段建议设置为false
+       check=true 启动时检查服务提供方，如果服务提供方没有启动则报错
+   -->
+    <dubbo:consumer timeout="600000" check="false"/>
+
+</beans>

@@ -1,6 +1,7 @@
 package com.itheima.dao;
 
 import com.itheima.pojo.OrderSetting;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -28,4 +29,6 @@ public interface OrderSettingDao {
 
     @Insert("update t_ordersetting set reservations = #{reservations} where orderDate=#{orderDate}")
     void editReservationsByOrderDate(OrderSetting orderSetting);
+    @Delete("DELETE from t_ordersetting where orderDate <=#{today}")
+    void clearOrder(String today);
 }

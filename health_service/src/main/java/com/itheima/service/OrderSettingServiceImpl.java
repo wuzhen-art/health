@@ -80,5 +80,19 @@ public class OrderSettingServiceImpl implements OrderSettingService {
 
     }
 
+    /**
+     *@描述 清理预约设置表的数据
+     *@参数   today(当前日期)
+     *@返回值  空
+     *@创建人  MR Yang
+     *@创建时间  2019/8/29
+     *@修改人和其它信息
+     */
+    @Override
+    public void clearOrder(String today) {
+        orderSettingDao.clearOrder(today);
+    }
+
+
 
 }

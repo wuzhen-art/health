@@ -15,6 +15,7 @@
         <module>health_mobile</module>
         <module>health_web</module>
         <module>health_pojo</module>
+        <module>health_hotSite_jobs</module>
     </modules>
     <packaging>pom</packaging>
 
