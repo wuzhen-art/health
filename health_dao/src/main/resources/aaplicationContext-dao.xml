@@ -19,7 +19,7 @@
     <!--配置数据源,采用德鲁伊连接池-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://192.168.26.79:3306/health"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/health"/>
         <property name="username" value="root"/>
         <property name="password" value="root"/>
     </bean>
