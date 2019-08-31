@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface MenuDao {
 
-    @Select("select * from t_menu m,t_role_menu rm where m.id=rm.menu_id and m.level=1 and rm.role_id = #{id} order by m.path")
+    @Select("select * from t_menu where id in (select DISTINCT IFNULL(parentMenuId,id) from t_menu where id in (select menu_id from t_role_menu where role_id = #{id}))")
     LinkedHashSet<Menu> findMenuByRid(Integer id);
 
     @Select("select * from t_menu m,t_role_menu rm where m.id=rm.menu_id and m.parentMenuId =#{parentMenuId} and role_id =#{rid}")
